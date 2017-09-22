@@ -1,0 +1,9 @@
+<launch>
+  <arg name="config" default="base" />
+
+  <param name="robot_description"
+         command="$(find robot_models)/models/jackal/scripts/env_run
+                    $(find robot_models)/models/jackal/urdf/configs/$(arg config)
+                    $(find xacro)/xacro $(find robot_models)/models/jackal/urdf/jackal.urdf.xacro" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+</launch>

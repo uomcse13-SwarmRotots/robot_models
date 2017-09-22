@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <arg name="world" default="empty"/> 
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!--<arg name="world_name" value="$(find mybot_gazebo)/worlds/mybot.world"/>-->
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+  
+  <!-- <param name="robot_description" command="$(find xacro)/xacro.py '$(find robot_models)/models/jackal/urdf/jackal.urdf.xacro'"/> -->
+
+  <!--<include file="$(find robot_models)/models/jackal/launch/description.launch">
+    <arg name="config" value="front_laser" />
+  </include>-->
+
+  <!-- Load Jackal's description, controllers, and teleop nodes. -->
+  <include file="$(find robot_models)/models/jackal/launch/description.launch">
+    <arg name="config" value="base" />
+  </include>
+  <include file="$(find robot_models)/models/jackal/control/launch/control.launch" />
+  <include file="$(find robot_models)/models/jackal/control/launch/teleop.launch">
+    <arg name="joystick" value="false"/>
+  </include>
+
+  <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+   args="-urdf -param robot_description -model mybot" />
+
+
+
+</launch>
